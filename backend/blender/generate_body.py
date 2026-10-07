@@ -1379,14 +1379,13 @@ print(
 )
 
 # ==================================================
-# EXPORT
+# CLEAN GLB EXPORT
 # ==================================================
 
 print()
 print(
-    "---------- GLB EXPORT ----------"
+    "---------- CLEAN GLB EXPORT ----------"
 )
-
 
 os.makedirs(
     os.path.dirname(
@@ -1395,15 +1394,73 @@ os.makedirs(
     exist_ok=True
 )
 
+# --------------------------------------------------
+# Create evaluated mesh
+#
+# This applies the "Hide helpers" MASK modifier.
+# The original MPFB Human remains untouched.
+# --------------------------------------------------
+
+depsgraph = bpy.context.evaluated_depsgraph_get()
+
+evaluated_obj = obj.evaluated_get(
+    depsgraph
+)
+
+evaluated_mesh = bpy.data.meshes.new_from_object(
+    evaluated_obj,
+    depsgraph=depsgraph
+)
+
+print(
+    f"Source vertices    : "
+    f"{len(obj.data.vertices)}"
+)
+
+print(
+    f"Export vertices    : "
+    f"{len(evaluated_mesh.vertices)}"
+)
+
+# Safety check:
+# Hide helpers should reduce the MPFB mesh.
+if len(evaluated_mesh.vertices) >= len(obj.data.vertices):
+    bpy.data.meshes.remove(
+        evaluated_mesh
+    )
+
+    raise RuntimeError(
+        "VESTORA: Clean export failed. "
+        "Hide helpers modifier does not appear "
+        "to be applied."
+    )
+
+# --------------------------------------------------
+# Create temporary clean object
+# --------------------------------------------------
+
+export_obj = bpy.data.objects.new(
+    "VestoraBody",
+    evaluated_mesh
+)
+
+bpy.context.collection.objects.link(
+    export_obj
+)
+
+export_obj.matrix_world = obj.matrix_world.copy()
+
+# --------------------------------------------------
+# Export ONLY temporary clean body
+# --------------------------------------------------
 
 bpy.ops.object.select_all(
     action="DESELECT"
 )
 
-obj.select_set(True)
+export_obj.select_set(True)
 
-bpy.context.view_layer.objects.active = obj
-
+bpy.context.view_layer.objects.active = export_obj
 
 bpy.ops.export_scene.gltf(
     filepath=OUTPUT_PATH,
@@ -1411,9 +1468,17 @@ bpy.ops.export_scene.gltf(
     use_selection=True
 )
 
+# --------------------------------------------------
+# Remove temporary export object
+# --------------------------------------------------
+
+bpy.data.objects.remove(
+    export_obj,
+    do_unlink=True
+)
 
 print(
-    f"Exported: {OUTPUT_PATH}"
+    f"Exported clean body: {OUTPUT_PATH}"
 )
 
 
