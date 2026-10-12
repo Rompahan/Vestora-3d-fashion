@@ -1,32 +1,103 @@
-# React + TypeScript + Vite
+# VESTORA — Onboarding Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Добро пожаловать в проект **VESTORA**! Это инновационная fashion-tech платформа для параметрической генерации 3D-тел человека и виртуальной примерки одежды.
 
-Currently, two official plugins are available:
+Этот документ поможет вам быстро развернуться и начать работу над проектом.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌟 Видение продукта
 
-## React Compiler
+VESTORA позволяет пользователям:
+1. Вводить свои антропометрические данные.
+2. Генерировать 3D-модель тела на основе измерений.
+3. Виртуально примерять и кастомизировать одежду.
+4. Использовать AI для изменения дизайна одежды.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 Технологический стек
 
-## Expanding the Oxlint configuration
+### Frontend
+- **React 19** + **TypeScript**
+- **Vite** (сборка)
+- **Three.js** + **React Three Fiber** + **Drei** (3D визуализация)
+- **Tailwind CSS 4** (стилизация)
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+### Backend
+- **Python 3.11+**
+- **FastAPI** (API оркестратор)
+- **Blender 4.5 LTS** (движок генерации геометрии)
+- **MPFB2** (плагин MakeHuman для Blender)
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+## 📁 Структура репозитория
+
+```text
+vestora-mvp-clean/
+├── backend/                # Исходный код бэкенда
+│   ├── app/                # FastAPI приложение
+│   │   └── main.py         # Точка входа API
+│   ├── blender/            # Скрипты для работы внутри Blender
+│   │   ├── base_human.blend # Базовая 3D-модель человека
+│   │   ├── generate_body.py # Основной скрипт генерации
+│   │   └── measurement_engine.py # Движок обсчета измерений
+│   ├── tests/              # Тесты Body Engine
+│   └── generated/          # Временное хранилище моделей (в .gitignore)
+├── src/                    # Исходный код фронтенда
+│   ├── components/         # React компоненты
+│   ├── App.tsx             # Основной компонент и роутинг
+│   ├── Landing.tsx         # Главная страница (Landing Page)
+│   └── main.tsx            # Точка входа React
+├── public/                 # Статические ассеты и базовые 3D-модели
+├── package.json            # Зависимости фронтенда
+└── README.md               # Этот файл
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## 🚀 Быстрый старт
+
+### 1. Установка Frontend
+Если вы работаете **только над Landing Page**, вам **не обязательно** устанавливать Blender и Python.
+
+```bash
+# Установка зависимостей (npm или bun)
+npm install
+
+# Запуск в режиме разработки
+npm run dev
+```
+Фронтенд будет доступен по адресу: `http://localhost:5173`
+
+### 2. Установка Backend (необязательно для Frontend-задач)
+Для полной работы Body Engine требуются:
+- Python 3.11
+- Blender 4.5 LTS (путь по умолчанию: `C:\Program Files\Blender Foundation\Blender 4.5\blender.exe`)
+
+```powershell
+cd backend
+python -m venv .venv
+# Активация в PowerShell:
+.\.venv\Scripts\Activate.ps1
+
+# Установка базовых зависимостей (requirements.txt пока отсутствует):
+pip install fastapi uvicorn pydantic
+```
+
+**Важно:** Если Blender установлен в другую папку, обновите путь в `backend/app/main.py` (переменная `BLENDER_EXECUTABLE`).
+
+Запуск API:
+```bash
+# Из папки backend
+python -m uvicorn app.main:app --reload
+```
+API будет доступно по адресу: `http://127.0.0.1:8000`
+
+## 🛠 Устранение неполадок
+
+- **CORS Error**: Фронтенд должен быть на `http://localhost:5173`.
+- **Blender not found**: Проверьте путь в `main.py`. На разных компьютерах путь к Blender может отличаться.
+- **Модель не грузится**: Убедитесь, что бэкенд запущен, если вы нажимаете "Generate Body".
+
+## 🔗 Дополнительная документация
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) — детальное описание архитектуры.
+- [CONTRIBUTING.md](CONTRIBUTING.md) — правила разработки и чек-лист.
+- [ROADMAP.md](ROADMAP.md) — текущий статус и планы.
+
+---
+🤖 Generated for VESTORA team.
