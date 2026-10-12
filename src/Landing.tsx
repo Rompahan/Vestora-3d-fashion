@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import CyberFashion from './components/CyberFashion';
 import { Link } from 'react-router-dom';
 
 // Компонент для плавной анимации при скролле
@@ -74,7 +75,7 @@ const FaqItem = ({ question, answer }: { question: string, answer: string }) => 
 
 export default function Landing() {
     return (
-        <div className="min-h-screen bg-white text-[#1a1a1a] font-['Plus_Jakarta_Sans'] overflow-x-hidden selection:bg-[#F4EBFF]">
+        <div className="min-h-screen bg-white text-[#1a1a1a] font-['Plus_Jakarta_Sans','Inter',sans-serif] overflow-x-hidden selection:bg-[#F4EBFF]">
 
             {/* HEADER */}
             <nav className="max-w-[1440px] mx-auto px-6 md:px-12 py-6 flex items-center justify-between relative z-50 bg-white/80 backdrop-blur-md sticky top-0 border-b border-gray-50/50">
@@ -106,75 +107,91 @@ export default function Landing() {
             </nav>
 
             {/* HERO SECTION */}
-            <main className="max-w-[1440px] mx-auto px-6 md:px-12 pt-10 pb-32 relative min-h-[85vh] flex flex-col justify-center">
-                <FadeIn delay={100}>
-                    <div className="absolute top-10 left-6 md:left-12 flex items-center gap-3 border border-gray-100 rounded-full py-1.5 px-2 bg-white z-20 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-                        <div className="flex -space-x-2">
-                            <div className="w-6 h-6 rounded-full bg-gray-100 border-2 border-white"></div>
-                            <div className="w-6 h-6 rounded-full bg-gray-200 border-2 border-white"></div>
-                            <div className="w-6 h-6 rounded-full bg-gray-300 border-2 border-white"></div>
-                        </div>
-                        <span className="text-xs font-semibold pr-3 text-gray-600">Trusted by 50+ Ateliers</span>
-                    </div>
-                </FadeIn>
+            <main className="relative w-full min-h-[90vh] flex flex-col justify-center overflow-hidden bg-white">
 
-                <div className="grid lg:grid-cols-3 gap-10 items-center h-full relative z-10 mt-20 lg:mt-0">
-                    <div className="flex flex-col items-start z-20">
-                        <FadeIn delay={200} direction="left">
-                            <h2 className="text-6xl md:text-[5.5rem] font-medium tracking-tight leading-[0.9] text-[#1a1a1a] mb-6">
-                                Unlock <br /> your fit's <br /> potential
-                            </h2>
-                        </FadeIn>
-                        <FadeIn delay={300} direction="left">
-                            <p className="text-[#666] text-[15px] max-w-[280px] leading-relaxed mb-8 font-medium">
-                                Our AI scans your measurements and generates production-ready garments perfectly tailored to you.
-                            </p>
-                        </FadeIn>
-                        <FadeIn delay={400} direction="left">
-                            <Link to="/app" className="bg-[#F4EBFF] hover:bg-[#EBDCFF] text-[#3B1E63] font-semibold text-[15px] px-8 py-4 rounded-xl transition-colors">
-                                Analyze Fit
-                            </Link>
-                        </FadeIn>
+                {/* === 3D СЛОЙ (ТЕПЕРЬ НА ВСЮ ШИРИНУ И ВЫСОТУ) === */}
+                <div className="absolute inset-0 w-full h-full z-0 flex items-center justify-center">
+                    {/* Декоративный градиент */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#F4EBFF_0%,transparent_60%)] opacity-40 pointer-events-none"></div>
+
+                    {/* 3D Холст без ограничений по краям */}
+                    <div className="absolute inset-0 w-full h-full">
+                        <CyberFashion />
                     </div>
 
-                    <FadeIn delay={300}>
-                        <div className="relative h-[500px] lg:h-[700px] w-full flex justify-center items-center pointer-events-none">
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#F4EBFF_0%,transparent_60%)] opacity-40"></div>
-                            <div className="relative w-full max-w-sm aspect-[3/4] bg-gradient-to-b from-gray-50 to-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] overflow-hidden border border-gray-100 flex items-center justify-center">
-                                <div className="text-gray-300 font-medium tracking-widest uppercase text-xs">[ 3D Avatar Rendering ]</div>
-                                <div className="absolute top-1/4 right-10 w-24 h-24 border border-[#D8B4FE]/40 bg-white/50 backdrop-blur-md flex flex-col justify-between p-3 rounded-lg shadow-sm">
-                                    <div className="w-2 h-2 bg-[#D8B4FE] rounded-full"></div>
-                                    <span className="text-[9px] text-[#1a1a1a] font-bold uppercase tracking-wider">Shoulders<br />Aligned</span>
-                                </div>
+                    {/* Плашка "Mesh Active" смещена немного правее от центра */}
+                    <div className="absolute top-1/4 right-[15%] lg:right-[30%] w-24 h-24 border border-[#D8B4FE]/40 bg-white/50 backdrop-blur-md flex flex-col justify-between p-3 rounded-lg shadow-sm pointer-events-none">
+                        <div className="w-2 h-2 bg-[#D8B4FE] rounded-full animate-pulse"></div>
+                        <span className="text-[9px] text-[#1a1a1a] font-bold uppercase tracking-wider">Mesh<br />Active</span>
+                    </div>
+                </div>
+                {/* === КОНЕЦ 3D СЛОЯ === */}
+
+
+                {/* === КОНТЕНТНЫЙ СЛОЙ (ТЕКСТ И СТАТИСТИКА ПОВЕРХ 3D) === */}
+                {/* pointer-events-none здесь нужен, чтобы невидимые блоки не перекрывали мышку для 3D */}
+                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full relative z-10 pointer-events-none mt-10">
+
+                    {/* Плашка "Trusted by" (pointer-events-auto возвращает ей кликабельность) */}
+                    <FadeIn delay={100}>
+                        <div className="inline-flex items-center gap-3 border border-gray-100 rounded-full py-1.5 px-2 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.02)] mb-16 pointer-events-auto">
+                            <div className="flex -space-x-2">
+                                <div className="w-6 h-6 rounded-full bg-gray-100 border-2 border-white"></div>
+                                <div className="w-6 h-6 rounded-full bg-gray-200 border-2 border-white"></div>
+                                <div className="w-6 h-6 rounded-full bg-gray-300 border-2 border-white"></div>
                             </div>
+                            <span className="text-xs font-semibold pr-3 text-gray-600">Trusted by 50+ Ateliers</span>
                         </div>
                     </FadeIn>
 
-                    <div className="flex flex-col gap-12 items-end text-right z-20">
-                        {[
-                            { stat: '99%', text: 'accurate digital body alignment' },
-                            { stat: '50+', text: 'customizable garment pieces' },
-                            { stat: '1-click', text: 'tech pack export for ateliers' }
-                        ].map((item, i) => (
-                            <FadeIn key={i} delay={400 + i * 100} direction="right">
-                                <div>
-                                    <div className="flex items-center justify-end gap-3 mb-2">
-                                        <span className="text-4xl font-medium tracking-tight text-[#1a1a1a]">{item.stat}</span>
-                                    </div>
-                                    <p className="text-[13px] text-[#666] font-medium max-w-[140px]">{item.text}</p>
-                                </div>
+                    <div className="flex flex-col lg:flex-row justify-between items-center gap-10">
+                        {/* Левая колонка: Текст */}
+                        <div className="w-full lg:w-1/3 flex flex-col items-start pointer-events-auto">
+                            <FadeIn delay={200} direction="left">
+                                <h2 className="text-6xl md:text-[5.5rem] font-medium tracking-tight leading-[0.9] text-[#1a1a1a] mb-6">
+                                    Unlock <br /> your fit's <br /> potential
+                                </h2>
                             </FadeIn>
-                        ))}
+                            <FadeIn delay={300} direction="left">
+                                <p className="text-[#666] text-[15px] max-w-[280px] leading-relaxed mb-8 font-medium">
+                                    Our AI scans your measurements and generates production-ready garments perfectly tailored to you.
+                                </p>
+                            </FadeIn>
+                            <FadeIn delay={400} direction="left">
+                                <Link to="/app" className="bg-[#F4EBFF] hover:bg-[#EBDCFF] text-[#3B1E63] font-semibold text-[15px] px-8 py-4 rounded-xl transition-colors">
+                                    Analyze Fit
+                                </Link>
+                            </FadeIn>
+                        </div>
+
+                        {/* Центральная часть теперь пустая, там сквозь нее видно 3D-модель */}
+                        <div className="w-full lg:w-1/3 hidden lg:block"></div>
+
+                        {/* Правая колонка: Статистика */}
+                        <div className="w-full lg:w-1/3 flex flex-col gap-12 items-end text-right pointer-events-auto">
+                            {[
+                                { stat: '99%', text: 'accurate digital body alignment' },
+                                { stat: '50+', text: 'customizable garment pieces' },
+                                { stat: '1-click', text: 'tech pack export for ateliers' }
+                            ].map((item, i) => (
+                                <FadeIn key={i} delay={400 + i * 100} direction="right">
+                                    <div>
+                                        <div className="flex items-center justify-end gap-3 mb-2">
+                                            <span className="text-4xl font-medium tracking-tight text-[#1a1a1a]">{item.stat}</span>
+                                        </div>
+                                        <p className="text-[13px] text-[#666] font-medium max-w-[140px]">{item.text}</p>
+                                    </div>
+                                </FadeIn>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </main>
+
             {/* MARQUEE SECTION (Бегущая строка) */}
             <section className="relative border-y border-gray-100 bg-white overflow-hidden py-12 flex">
-                {/* Градиенты по краям для эффекта растворения */}
                 <div className="absolute left-0 top-0 w-32 md:w-64 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
                 <div className="absolute right-0 top-0 w-32 md:w-64 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
-
-                {/* Встроенные стили для бесконечной анимации */}
                 <style>{`
           @keyframes scroll {
             0% { transform: translateX(0); }
@@ -191,10 +208,9 @@ export default function Landing() {
         `}</style>
 
                 <div className="animate-scroll items-center gap-20 md:gap-32 px-10">
-                    {/* Удваиваем список для бесшовной бесконечной прокрутки */}
                     {[...Array(2)].map((_, i) => (
                         <React.Fragment key={i}>
-                            <span className="text-2xl font-bold tracking-widest text-gray-300 hover:text-[#1a1a1a] transition-colors duration-300 uppercase font-['Plus_Jakarta_Sans'] cursor-default">Balenciaga</span>
+                            <span className="text-2xl font-bold tracking-widest text-gray-300 hover:text-[#1a1a1a] transition-colors duration-300 uppercase font-['Plus_Jakarta_Sans','Inter',sans-serif] cursor-default">Balenciaga</span>
                             <span className="text-3xl font-normal tracking-tighter text-gray-300 hover:text-[#1a1a1a] transition-colors duration-300 font-serif cursor-default">VOGUE</span>
                             <span className="text-2xl font-extrabold tracking-tight text-gray-300 hover:text-[#1a1a1a] transition-colors duration-300 cursor-default">LVMH</span>
                             <span className="text-2xl font-semibold tracking-[0.2em] text-gray-300 hover:text-[#1a1a1a] transition-colors duration-300 uppercase cursor-default">Prada</span>
@@ -214,14 +230,38 @@ export default function Landing() {
                         <p className="text-[#666] text-sm mb-12">Parametric basics ready for your modifications.</p>
                     </FadeIn>
                     <div className="grid md:grid-cols-3 gap-6">
-                        {['T-Shirt', 'Hoodie', 'Jacket'].map((item, i) => (
+                        {[
+                            // Заглушка для T-Shirt (можешь потом добавить tshirt-model.jpg)
+                            { name: 'T-Shirt', desc: 'Base parametric pattern', img: './tshirt-model.jpg' },
+
+                            // Твое новое худи! Мы указываем путь к hoodie-model.jpg
+                            { name: 'Hoodie', desc: 'Oversized streetwear pattern', img: '/hoodie-model.jpg' },
+
+                            // Заглушка для куртки (можешь потом добавить jacket-model.jpg)
+                            { name: 'Jacket', desc: 'Base parametric pattern', img: './jacket-model.jpg' }
+                        ].map((item, i) => (
                             <FadeIn key={i} delay={i * 150}>
                                 <div className="group bg-white p-6 rounded-2xl border border-gray-100 hover:border-[#D8B4FE] hover:shadow-[0_10px_40px_rgba(216,180,254,0.15)] transition-all cursor-pointer">
-                                    <div className="aspect-[4/3] bg-gray-50 rounded-xl mb-6 flex items-center justify-center text-gray-300 text-xs font-semibold uppercase tracking-widest group-hover:bg-[#F4EBFF]/30 transition-colors">
-                                        {item} .glb
+
+                                    {/* Блок с картинкой */}
+                                    <div className="aspect-[4/3] bg-gray-50 rounded-xl mb-6 overflow-hidden relative border border-gray-50">
+                                        {/* Сама картинка с анимацией увеличения при наведении */}
+                                        <img
+                                            src={item.img}
+                                            alt={item.name}
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        />
+
+                                        {/* Плашка .glb при наведении */}
+                                        <div className="absolute inset-0 bg-[#1a1a1a]/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                                            <span className="bg-white/90 px-4 py-2 rounded-lg text-[#1a1a1a] text-xs font-bold tracking-widest uppercase shadow-lg">
+                                                {item.name} .glb
+                                            </span>
+                                        </div>
                                     </div>
-                                    <h4 className="font-semibold text-lg">{item}</h4>
-                                    <p className="text-xs text-gray-500 mt-1">Base parametric pattern</p>
+
+                                    <h4 className="font-semibold text-lg">{item.name}</h4>
+                                    <p className="text-xs text-gray-500 mt-1">{item.desc}</p>
                                 </div>
                             </FadeIn>
                         ))}
@@ -304,9 +344,9 @@ export default function Landing() {
                     </div>
                 </div>
             </section>
+
             {/* FAQ SECTION */}
             <section className="bg-white py-32 border-t border-gray-100 relative">
-                {/* Декоративное свечение в фоне */}
                 <div className="absolute left-[-10%] top-[20%] w-[500px] h-[500px] bg-[#D8B4FE]/5 blur-[100px] rounded-full pointer-events-none"></div>
 
                 <div className="max-w-[1440px] mx-auto px-6 md:px-12 grid lg:grid-cols-12 gap-16 relative z-10">
@@ -346,9 +386,9 @@ export default function Landing() {
                     </div>
                 </div>
             </section>
+
             {/* FINAL CTA SECTION (Темный контрастный блок) */}
             <section className="bg-[#1a1a1a] py-32 text-white relative overflow-hidden">
-                {/* Декоративное свечение */}
                 <div className="absolute top-[-50%] right-[-10%] w-[800px] h-[800px] bg-[#D8B4FE]/10 blur-[100px] rounded-full pointer-events-none"></div>
 
                 <div className="max-w-[1440px] mx-auto px-6 md:px-12 text-center relative z-10">
@@ -378,8 +418,6 @@ export default function Landing() {
             <footer className="bg-white pt-20 pb-10 border-t border-gray-100">
                 <div className="max-w-[1440px] mx-auto px-6 md:px-12">
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-16">
-
-                        {/* Logo & Info */}
                         <div className="col-span-2 lg:col-span-2">
                             <div className="flex items-center gap-2 mb-6">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -391,8 +429,6 @@ export default function Landing() {
                                 The next-generation parametric design platform for digital fashion and automated atelier production.
                             </p>
                         </div>
-
-                        {/* Links Group 1 */}
                         <div>
                             <h4 className="font-bold text-[#1a1a1a] mb-5 text-sm uppercase tracking-widest">Platform</h4>
                             <ul className="space-y-4 text-sm text-gray-500 font-medium">
@@ -402,8 +438,6 @@ export default function Landing() {
                                 <li><a href="#" className="hover:text-[#D8B4FE] transition-colors">Tech Packs</a></li>
                             </ul>
                         </div>
-
-                        {/* Links Group 2 */}
                         <div>
                             <h4 className="font-bold text-[#1a1a1a] mb-5 text-sm uppercase tracking-widest">Company</h4>
                             <ul className="space-y-4 text-sm text-gray-500 font-medium">
@@ -413,8 +447,6 @@ export default function Landing() {
                                 <li><a href="#" className="hover:text-[#D8B4FE] transition-colors">Partners</a></li>
                             </ul>
                         </div>
-
-                        {/* Links Group 3 */}
                         <div>
                             <h4 className="font-bold text-[#1a1a1a] mb-5 text-sm uppercase tracking-widest">Legal</h4>
                             <ul className="space-y-4 text-sm text-gray-500 font-medium">
@@ -424,7 +456,6 @@ export default function Landing() {
                             </ul>
                         </div>
                     </div>
-
                     <div className="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                         <p className="text-gray-400 text-sm font-medium">
                             © {new Date().getFullYear()} Vestora. All rights reserved.
@@ -433,14 +464,10 @@ export default function Landing() {
                             <a href="#" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-[#D8B4FE] hover:text-white transition-colors">
                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
                             </a>
-                            <a href="#" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-[#D8B4FE] hover:text-white transition-colors">
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" /></svg>
-                            </a>
                         </div>
                     </div>
                 </div>
             </footer>
-
         </div>
     );
 }

@@ -22,3 +22,42 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
+
+
+# ==========================================
+# VESTORA — Python
+# ==========================================
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# ==========================================
+# VESTORA — Environment variables
+# ==========================================
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# VESTORA — Blender temporary files
+# ==========================================
+*.blend1
+*.blend2
+*.blend@
+*.blend1.gz
+
+# ==========================================
+# VESTORA — Generated 3D models
+# ==========================================
+backend/generated/
+
+# ==========================================
+# VESTORA — Temporary files
+# ==========================================
+*.tmp
+*.temp
