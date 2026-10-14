@@ -1,0 +1,12 @@
+﻿# VESTORA Code Owners
+# All changes require review by the project owner
+* @Rompahan
+
+# Core system
+/backend/ @Rompahan
+/src/App.tsx @Rompahan
+/src/main.tsx @Rompahan
+
+# Shared frontend configuration
+/package.json @Rompahan
+/src/index.css @Rompahan
